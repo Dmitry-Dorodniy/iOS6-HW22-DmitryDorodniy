@@ -1,5 +1,12 @@
 import Foundation
 
+var stack = Stack<Chip>()
+var count = 0
+var available = false
+let condition = NSCondition()
+
+// MARK: - Chip
+
 public struct Chip {
     public enum ChipType: UInt32 {
         case small = 1
@@ -19,13 +26,14 @@ public struct Chip {
 
     public func sodering() {
         let soderingTime = chipType.rawValue
-        print("sodering: \(chipType.rawValue)")
+        print("sodering: \(chipType.rawValue) sec")
         sleep(UInt32(soderingTime))
     }
 }
 
 
 // MARK: - LIFO Stack
+
 struct Stack<Element> {
     private var array = [Element]()
 
@@ -46,15 +54,9 @@ struct Stack<Element> {
     }
 }
 
-
-
-var stack = Stack<Chip>()
-var count = 0
-var available = false
-let condition = NSCondition()
+// MARK: - Timer
 
 let timer = Timer(timeInterval: 2, repeats: true) { _ in
-    //    print("\n\(count * 2) sec")
     condition.lock()
     let chip = Chip.make()
     stack.push(chip)
@@ -72,7 +74,7 @@ let timer = Timer(timeInterval: 2, repeats: true) { _ in
     }
 }
 
-
+// MARK: - Threads
 
 class GeneratedThread: Thread {
     override func main() {
@@ -88,7 +90,7 @@ class WorkedThread: Thread {
                 condition.wait()
             }
             if let chip = stack.peek() {
-                print("pop from stack: \(chip.chipType)") }
+                print("remove from stack: \(chip.chipType)") }
             stack.pop()?.sodering()
             if stack.isEmpty {
                 print("empty stack")
@@ -98,19 +100,11 @@ class WorkedThread: Thread {
     }
 }
 
+// MARK: - Start
 let generatedThread = GeneratedThread()
 let workedThread = WorkedThread()
 generatedThread.start()
 workedThread.start()
 
-
-//for _ in 1...23 {
-//
-//    if stack.isEmpty {
-//        print("break")
-//        break
-//    }
-//    print("peek: \(stack.peek() ?? 0)   pop: \(stack.pop() ?? 0)")
-//}
 
 
