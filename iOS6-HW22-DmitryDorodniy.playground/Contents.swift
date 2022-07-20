@@ -74,3 +74,43 @@ let timer = Timer(timeInterval: 2, repeats: true) { _ in
 
 
 
+class GeneratedThread: Thread {
+    override func main() {
+        RunLoop.current.add(timer, forMode: .common)
+        RunLoop.current.run()
+    }
+}
+
+class WorkedThread: Thread {
+    override func main() {
+        for _ in 1...10 {
+            while !available {
+                condition.wait()
+            }
+            if let chip = stack.peek() {
+                print("pop from stack: \(chip.chipType)") }
+            stack.pop()?.sodering()
+            if stack.isEmpty {
+                print("empty stack")
+                available = false
+            }
+        }
+    }
+}
+
+let generatedThread = GeneratedThread()
+let workedThread = WorkedThread()
+generatedThread.start()
+workedThread.start()
+
+
+//for _ in 1...23 {
+//
+//    if stack.isEmpty {
+//        print("break")
+//        break
+//    }
+//    print("peek: \(stack.peek() ?? 0)   pop: \(stack.pop() ?? 0)")
+//}
+
+
