@@ -48,3 +48,29 @@ struct Stack<Element> {
 
 
 
+var stack = Stack<Chip>()
+var count = 0
+var available = false
+let condition = NSCondition()
+
+let timer = Timer(timeInterval: 2, repeats: true) { _ in
+    //    print("\n\(count * 2) sec")
+    condition.lock()
+    let chip = Chip.make()
+    stack.push(chip)
+    print("\n\(count * 2) sec")
+    if let element = stack.peek() {
+        print("add to stack: \(element.chipType)") }
+    available = true
+    condition.signal()
+    condition.unlock()
+
+    count += 1
+    if count == 10 {
+        print("---Timer cancel---")
+        timer.invalidate()
+    }
+}
+
+
+
