@@ -25,4 +25,26 @@ public struct Chip {
 }
 
 
+// MARK: - LIFO Stack
+struct Stack<Element> {
+    private var array = [Element]()
+
+    var isEmpty: Bool {
+        return array.isEmpty
+    }
+
+    mutating func push(_ chip: Element) {
+        array.append(chip)
+    }
+
+    mutating func pop() -> Element? {
+        return array.popLast()
+    }
+
+    mutating func peek() -> Element? {
+        return array.last
+    }
+}
+
+
 
