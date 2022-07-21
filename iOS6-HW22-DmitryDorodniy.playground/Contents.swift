@@ -86,16 +86,19 @@ class GeneratedThread: Thread {
 class WorkedThread: Thread {
     override func main() {
         for _ in 1...10 {
+            condition.lock()
             while !available {
                 condition.wait()
             }
             if let chip = stack.peek() {
-                print("remove from stack: \(chip.chipType)") }
-            stack.pop()?.sodering()
-            if stack.isEmpty {
-                print("empty stack")
-                available = false
-            }
+                print("remove from stack: \(chip.chipType)")
+                stack.pop()?.sodering() }
+            available = false
+            condition.unlock()
+//            if stack.isEmpty {
+//                print("empty stack")
+//                available = false
+//            }
         }
     }
 }
