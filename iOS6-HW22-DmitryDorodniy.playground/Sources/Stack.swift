@@ -1,6 +1,7 @@
 import Foundation
 
-public struct Stack<Element> {
+public class Stack<Element> {
+
     private var array = [Element]()
     private let condition = NSLock()
 
@@ -8,15 +9,19 @@ public struct Stack<Element> {
         return array.isEmpty
     }
 
+    var count: Int {
+        return array.count
+    }
+
     public init() {}
     
-    public mutating func push(_ newElement: Element) {
+    public func push(_ newElement: Element) {
         condition.lock()
         array.append(newElement)
         condition.unlock()
     }
 
-    public mutating func pop() -> Element? {
+    public func pop() -> Element? {
         condition.lock()
         let lastElement = array.removeLast()
         condition.unlock()
@@ -24,7 +29,7 @@ public struct Stack<Element> {
 
     }
 
-    public mutating func peek() -> Element? {
+    public func peek() -> Element? {
         condition.lock()
         let lastElement = array.last
         condition.unlock()
