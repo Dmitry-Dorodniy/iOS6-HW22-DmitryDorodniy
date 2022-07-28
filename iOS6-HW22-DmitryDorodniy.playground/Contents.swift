@@ -1,7 +1,4 @@
 import Foundation
-import PlaygroundSupport
-
-PlaygroundPage.current.needsIndefiniteExecution = true
 
 let stack = Stack<Chip>()
 let generatedThread = GeneratedThread(stack: stack)

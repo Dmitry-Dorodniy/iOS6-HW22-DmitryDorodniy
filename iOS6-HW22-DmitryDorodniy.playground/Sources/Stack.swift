@@ -3,14 +3,20 @@ import Foundation
 public class Stack<Element> {
 
     private var array = [Element]()
-    private let condition = NSLock()
+    private let condition = NSCondition()
 
     var isEmpty: Bool {
-        return array.isEmpty
+        condition.lock()
+        let isEmpty = array.isEmpty
+        condition.unlock()
+        return isEmpty
     }
 
     var count: Int {
-        return array.count
+        condition.lock()
+        let count = array.count
+        condition.unlock()
+        return count
     }
 
     public init() {}

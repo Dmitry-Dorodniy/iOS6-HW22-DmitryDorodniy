@@ -1,10 +1,3 @@
-//
-//  Chip.swift
-//  
-//
-//  Created by Dmitry Dorodniy on 24.07.2022.
-//
-
 import Foundation
 
 public struct Chip {
